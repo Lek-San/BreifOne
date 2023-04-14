@@ -31,7 +31,7 @@ class Product
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[Assert\NotBlank()]
-    private ?category $categoryId = null;
+    private ?Category $categoryId = null;
 
     public function getId(): ?int
     {

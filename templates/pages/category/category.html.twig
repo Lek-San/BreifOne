@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	| Catégories
+{% endblock %}
+
+
+{% block body %}
+
+	{% include "partials/_header.html.twig" %}
+
+	<div class="container">
+
+        <h1 class="text-center mt-4">Toutes les categories</h1>
+
+        {% for category in categories %}
+
+		<div class="d-flex justify-content-center mt-5">
+			<table class="table-primary ">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Nombre de produits</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row"></th>
+						<td>{{ category.id }}</td>
+						<td>{{ category.categoryName }}</td>
+						<td>@mdo</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+        {% endfor %}
+
+	</div>
+
+{% endblock %}

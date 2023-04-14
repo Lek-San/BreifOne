@@ -7,8 +7,6 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\Product;
 use App\Entity\Category;
 
-require_once 'vendor/autoload.php';
-
 class AppFixtures extends Fixture
 {
 
@@ -18,7 +16,7 @@ class AppFixtures extends Fixture
             $product = new Product();
         
             $product->setProductName('Produit ' . $i)
-                    ->setProductDesc('C\'est la description du produit ' . $i)
+                    ->setProductDesc('C\'est la description du produit n°' . $i)
                     ->setProductPrice(mt_rand(0.59, 99.99));
             
             $manager->persist($product);
@@ -27,7 +25,7 @@ class AppFixtures extends Fixture
         for ($i = 1; $i < 10; $i++) {
             $category = new Category();
         
-            $category->setCategoryName('Categorie ' . $i);
+            $category->setCategoryName('Categorie n°' . $i);
             
             $manager->persist($category);
         }
