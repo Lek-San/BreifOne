@@ -13,6 +13,19 @@
 
         <h1 class="text-center mt-4">Toutes les categories</h1>
 
+		<div class="countbadge d-flex justify-content-between">
+			<h5>
+				Il y a au total
+				{{ categories.getTotalItemCount }}
+				catégories.
+			</h5>
+			<button class="btn btn-primary" type="submit">
+				<a class="nav-link" href="/category/newCategory">Créer une catégorie</a>
+			</button>
+		</div>
+
+
+
         {% for category in categories %}
 
 		<div class="d-flex justify-content-center mt-5">
@@ -29,13 +42,14 @@
 						<th scope="row"></th>
 						<td>{{ category.id }}</td>
 						<td>{{ category.categoryName }}</td>
-						<td>@mdo</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
         {% endfor %}
+
+		<button class="btn btn-primary" type="submit">Créer une categorie</button>
 
 	</div>
 

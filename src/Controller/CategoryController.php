@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,11 +28,26 @@ class CategoryController extends AbstractController
         $categories = $paginatorInterface->paginate(
             $categoryRepository->findAll(),
             $request->query->getInt('page', 1), /*page number*/
-            15, /*limit per page*/
+            15 /*limit per page*/
         );
 
         return $this->render('pages/category/category.html.twig', [
             'categories' => $categories,
         ]);
     }
+
+    /**
+     * @return Response
+     */
+    #[Route('/category/newCategory', name: 'app_new_category', methods: ['GET', 'POST'])]
+    public function newCategory(): Response
+        {
+            $category = new Category();
+
+            $form = $this->createForm(CategoryType::class, $category);
+
+            return $this->render('pages/category/newCategory.html.twig', [
+                'form' => $form->createView()
+            ]);
+        }
 }

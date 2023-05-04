@@ -13,12 +13,15 @@
 	<div class="container mt-4">
 		<h1 class="text-center">Tous les Produit</h1>
 
-		<div class="count">
+		<div class="countbadge d-flex justify-content-between">
 			<h5>
 				Il y a au total
 				{{ products.getTotalItemCount }}
-				de produits.
+				de produits sur notre site.
 			</h5>
+			<button class="btn btn-primary" type="submit">
+				<a class="nav-link" href="/product/newProduct">Créer un produit</a>
+			</button>
 		</div>
 
 		<div class="d-flex justify-content-evenly">
@@ -35,7 +38,7 @@
 			{% endfor %}
 		</div>
 
-		<div class="navigation d-flex justify-content-center mt-4">
+		<div class="navigation d-flex justify-content-center mt-5">
 			{{ knp_pagination_render(products) }}
 		</div>
 
