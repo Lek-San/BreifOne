@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +22,12 @@ class ProductController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route('/products', name: 'app_product', methods: ['GET'])]
-    public function index(ProductRepository $productRepository, PaginatorInterface $paginatorInteface, Request $request): Response
+    #[Route('/products', name: 'app_products', methods: ['GET'])]
+    public function index(
+        ProductRepository $productRepository,
+        PaginatorInterface $paginatorInteface,
+        Request $request
+    ): Response
     {
         $products = $paginatorInteface->paginate(
             $productRepository->findAll(),
@@ -36,14 +40,41 @@ class ProductController extends AbstractController
         ]);
     }
 
+    /** This function creates a product
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/product/newProduct', name: 'app_new_product', methods: ['GET', 'POST'])]
-    public function new(): Response
-    {
-        $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
+    public function newProduct(
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response
+        {
+            $product = new Product();
+            $form = $this->createForm(ProductType::class, $product);
 
-        return $this->render('pages/product/newProduct.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $product = $form->getData();
+
+                $manager->persist($product);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Vous venez d\'ajouter un nouveau produit avec succès !!!'
+                );
+
+                return $this->redirectToRoute('app_products');
+            }
+
+
+
+            return $this->render('pages/product/newProduct.html.twig', [
+                'form' => $form->createView()
+            ]);
+        }
 }

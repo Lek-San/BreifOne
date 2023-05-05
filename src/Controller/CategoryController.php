@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,14 +38,36 @@ class CategoryController extends AbstractController
     }
 
     /**
+     * Tis function creates a category
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
      * @return Response
      */
     #[Route('/category/newCategory', name: 'app_new_category', methods: ['GET', 'POST'])]
-    public function newCategory(): Response
+    public function newCategory(
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response
         {
             $category = new Category();
-
             $form = $this->createForm(CategoryType::class, $category);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $category = $form->getData();
+
+                $manager->persist($category);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Vous venez d\'ajouter une nouvelle catégorie avec succès !!!'
+                );
+
+                return $this->redirectToRoute('app_category');
+            }
 
             return $this->render('pages/category/newCategory.html.twig', [
                 'form' => $form->createView()
