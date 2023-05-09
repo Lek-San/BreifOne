@@ -29,19 +29,25 @@
         {% for category in categories %}
 
 		<div class="d-flex justify-content-center mt-5">
-			<table class="table-primary ">
+			<table class="table table-primary ">
 				<thead>
 					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Nom</th>
-						<th scope="col">Nombre de produits</th>
+						<th scope="col">Identifiant</th>
+						<th scope="col">Nom de la catégory</th>
+						<th scope="col">Modification</th>
+						<th scope="col">Suppression</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<th scope="row"></th>
-						<td>{{ category.id }}</td>
+						<th scope="row">{{ category.id }}</th>
 						<td>{{ category.categoryName }}</td>
+						<td>
+							<a class="btn btn-warning nav-link" href={{ path('app_edit_category', { id: category.id}) }} onclick="return confirm('Vous êtes sur de vouloir modifiez cette Catégorie')">Modifier</a>
+						</td>
+						<td>
+							<a class="btn btn-danger nav-link" href={{ path('app_delete_category', {id: category.id}) }} onclick="return confirm('Vous êtes sur de vouloir supprimez cette Catégorie')">Supprimer</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -49,7 +55,7 @@
 
         {% endfor %}
 
-		<button class="btn btn-primary" type="submit">Créer une categorie</button>
+{#		<button class="btn btn-primary" type="submit">Créer une categorie</button>#}
 
 	</div>
 

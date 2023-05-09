@@ -3,8 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Product;
+use Doctrine\DBAL\Types\IntegerType;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,15 +20,27 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('categoryId', CategoryType::class, [
+                'attr' => [
+                    'class' => 'from-control'
+                ],
+                'label' => 'La catégorie',
+                'label_attr' => [
+                    'class' => 'form-label mt-3'
+                ],
+                'constraints' => [
+                    new Assert\NotBlank()
+                ]
+            ])
             ->add('productName', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlength' => '2',
-                    'maxlength' => '50'
+                    'minlength' => 2,
+                    'maxlength' => 50
                 ],
                 'label' => 'Nom du produit',
                 'label_attr' => [
-                    'class' => 'form-label mt-4'
+                    'class' => 'form-label mt-3'
                 ],
                 'constraints' => [
                     new Assert\Length(['min' => 2, 'max' => 50]),

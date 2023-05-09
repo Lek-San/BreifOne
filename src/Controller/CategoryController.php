@@ -38,7 +38,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * Tis function creates a category
+     * This function creates a category
      *
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -73,4 +73,53 @@ class CategoryController extends AbstractController
                 'form' => $form->createView()
             ]);
         }
+
+    #[Route('/category/edit/{id}', name: 'app_edit_category', methods: ['GET', 'POST'])]
+    Public function editCategory(
+        Category $category,
+        Request $request,
+        EntityManagerInterface $manager
+    ) : Response
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $category = $form->getData();
+
+            $manager->persist($category);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Vous venez de modifier la catégorie avec succès !!!'
+            );
+
+            return $this->redirectToRoute('app_category');
+        }
+
+        return $this->render('pages/category/editCategory.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/category/delete/{id}', name: 'app_delete_category' , methods: ['GET'])]
+    public function deleteCategory(
+        EntityManagerInterface $manager,
+        Category $category
+    ): Response
+    {
+
+        $manager->remove($category);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            'Vous venez de supprimez la catégorie avec succès !!!'
+        );
+
+        return $this->redirectToRoute('app_category');
+    }
+
 }
